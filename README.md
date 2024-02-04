@@ -1,6 +1,6 @@
 # employee-tracker
 
-[App Functionality Video Walkthrough] (https://drive.google.com/file/d/1HDOIGnfXFbBVxUqxs_ObEhWPhmMXFyCZ/view?usp=sharing)
+[App Functionality Video Walkthrough](https://drive.google.com/file/d/1HDOIGnfXFbBVxUqxs_ObEhWPhmMXFyCZ/view?usp=sharing)
 
 ## Description
 
@@ -8,7 +8,7 @@ I created this app to help buisnesses manage a database that contains informatio
 
 ## Installation
 
-In order to use the app, the user will need both Node.js and MySQL. [Here](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs) are instructions for installing Node. [Here] (https://coding-boot-camp.github.io/full-stack/mysql/mysql-installation-guide) are instructions for installing MySQL.
+In order to use the app, the user will need both Node.js and MySQL. [Here](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs) are instructions for installing Node. [Here](https://coding-boot-camp.github.io/full-stack/mysql/mysql-installation-guide) are instructions for installing MySQL.
 
 ## Usage
 
