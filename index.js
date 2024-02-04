@@ -5,13 +5,13 @@ const db = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: 'password',
+        password: 'Rslcgh1234$',
         database: 'company_db'
     },
     console.log('Connected to the company_db database.')
 );
 
-prompt([
+inquirer.prompt([
     {
         type: 'list',
         name: 'options',
@@ -55,18 +55,118 @@ function viewEmployees() {
 }
 
 function addDepartment() {
-    prompt([
+    inquirer.prompt([
         {
             type: 'input',
             name: 'department',
             message: 'What is the name of the department?'
         }
     ]).then(answers => {
-        db.query('INSERT INTO department(name) VALUES(answer.department)', function(err, results) {
+        db.query('INSERT INTO department(name) VALUES(?)',[answers.department], function(err, results) {
             console.log('Department added.');
         });
     });
 }
+
+function addRole() {
+    db.query('SELECT name FROM department', function(err, results) {
+        const departmentChoices = results.map(department => department.name);
+    });
+    
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'What is the title of the role?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary of the role?'
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'Which department does the role belong to?',
+            choices: departmentChoices
+        }
+    ]).then(answers => {
+        db.query('INSERT INTO role(title, salary, department_id) VALUES(? ? ?)',[answers.title, answers.salary, answers.department_id], function(err, results) {
+            console.log('Role added.');
+        });
+    });
+}
+
+function addEmployee() {
+    db.query('SELECT title FROM role', function(err, results) {
+        const roleTitles = results.map(role => role.title);
+    });
+
+    db.query('SELECT first_name, last_name FROM employee', function(err, results) {
+        const managerNames = results.map(employee => employee.first_name + ' ' + employee.last_name);
+    });
+
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: 'What is the first name of the employee?'
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: 'What is the last name of the employee?'
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: 'What is the role of the employee?',
+            choices: roleTitles
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: 'Who is the manager of the employee?',
+            choices: managerNames
+        }
+    ]).then(answers => {
+        db.query('INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES(? ? ? ?)',[answers.first_name, answers.last_name, answers.role_id, answers.manager_id], function(err, results) {
+            console.log('Employee added.');
+        });
+    });
+}
+
+function updateEmployeeRole() {
+    db.query('SELECT first_name, last_name FROM employee', function(err, results) {
+        const employeeNames = results.map(employee => employee.first_name + ' ' + employee.last_name);
+    });
+
+    db.query('SELECT title FROM role', function(err, results) {
+        const roleTitles = results.map(role => role.title);
+    });
+
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employee',
+            message: 'Which employee would you like to update?',
+            choices: employeeNames
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: 'What is the new role of the employee?',
+            choices: roleTitles
+        }
+    ]).then(answers => {
+        db.query('UPDATE employee SET role_id = answers.role_id WHERE first_name = answers.first_name AND last_name = answers.last_name', function(err, results) {
+            console.log('Employee role updated.');
+        });
+    });
+}
+
+
+
 
 
 
